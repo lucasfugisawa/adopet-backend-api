@@ -1,6 +1,6 @@
 package br.com.fugisawa.adopetbackendapi.dto.mapper
 
-import br.com.fugisawa.adopetbackendapi.domain.User
+import br.com.fugisawa.adopetbackendapi.domain.user.User
 import br.com.fugisawa.adopetbackendapi.dto.UserView
 import org.springframework.stereotype.Component
 

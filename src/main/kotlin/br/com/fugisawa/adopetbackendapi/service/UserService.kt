@@ -1,6 +1,6 @@
 package br.com.fugisawa.adopetbackendapi.service
 
-import br.com.fugisawa.adopetbackendapi.domain.User
+import br.com.fugisawa.adopetbackendapi.domain.user.User
 import br.com.fugisawa.adopetbackendapi.dto.UserCreate
 import br.com.fugisawa.adopetbackendapi.dto.UserUpdate
 import br.com.fugisawa.adopetbackendapi.dto.UserView

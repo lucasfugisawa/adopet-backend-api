@@ -1,8 +1,8 @@
 package br.com.fugisawa.adopetbackendapi.dto
 
-import br.com.fugisawa.adopetbackendapi.domain.PetSize
-import br.com.fugisawa.adopetbackendapi.domain.PetSpecies
-import br.com.fugisawa.adopetbackendapi.domain.PetStatus
+import br.com.fugisawa.adopetbackendapi.domain.pet.PetSize
+import br.com.fugisawa.adopetbackendapi.domain.pet.PetSpecies
+import br.com.fugisawa.adopetbackendapi.domain.pet.PetStatus
 
 data class PetCreate(
     var name: String,

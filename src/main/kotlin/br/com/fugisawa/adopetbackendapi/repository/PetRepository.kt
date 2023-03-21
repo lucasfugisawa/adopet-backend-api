@@ -1,6 +1,6 @@
 package br.com.fugisawa.adopetbackendapi.repository
 
-import br.com.fugisawa.adopetbackendapi.domain.Pet
+import br.com.fugisawa.adopetbackendapi.domain.pet.Pet
 import br.com.fugisawa.adopetbackendapi.dto.PetsPerSizeView
 import br.com.fugisawa.adopetbackendapi.dto.PetsPerSpeciesView
 import org.springframework.data.domain.Page

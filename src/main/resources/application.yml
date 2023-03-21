@@ -1,0 +1,74 @@
+spring:
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+    database-platform: org.hibernate.dialect.MySQLDialect
+    open-in-view: true
+    properties:
+      hibernate.show_sql: false
+      hibernate.dialect.storage_engine: innodb
+  datasource:
+    password: adopet-password
+    username: adopet
+    url: jdbc:mysql://localhost:3306/adopet?ssl-mode=REQUIRED
+  sql:
+    init:
+      mode: always
+      continue-on-error: true
+server:
+  compression:
+    enabled: false
+  http2:
+    enabled: true
+  port: 8080
+jwt-security:
+  secret: PseudoSecret-Pseudosecret-IMPORTANT-Please-Use-Ur-Own-Key-IMPORTANT
+  expiration-time: 365
+management:
+  endpoints:
+    web:
+    exposure:
+      include: "health,info"
+---
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.show_sql: true
+      hibernate.format_sql: true
+  config:
+    activate:
+      on-profile: test
+  sql:
+    init:
+      mode: always
+      continue-on-error: true
+---
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate.show_sql: true
+      hibernate.format_sql: true
+  config:
+    activate:
+      on-profile: development
+  sql:
+    init:
+      mode: always
+      continue-on-error: false
+---
+spring:
+  datasource:
+    password: adopet-password
+    username: adopet
+    url: jdbc:mysql://host.docker.internal:3306/adopet?ssl-mode=REQUIRED
+  config:
+    activate:
+      on-profile: docker
+server:
+  port: 8888

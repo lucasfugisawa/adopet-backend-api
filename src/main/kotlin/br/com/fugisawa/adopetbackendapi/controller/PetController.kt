@@ -1,8 +1,8 @@
 package br.com.fugisawa.adopetbackendapi.controller
 
-import br.com.fugisawa.adopetbackendapi.domain.PetSize
-import br.com.fugisawa.adopetbackendapi.domain.PetSpecies
-import br.com.fugisawa.adopetbackendapi.domain.PetStatus
+import br.com.fugisawa.adopetbackendapi.domain.pet.PetSize
+import br.com.fugisawa.adopetbackendapi.domain.pet.PetSpecies
+import br.com.fugisawa.adopetbackendapi.domain.pet.PetStatus
 import br.com.fugisawa.adopetbackendapi.dto.*
 import br.com.fugisawa.adopetbackendapi.service.PetService
 import org.springframework.data.domain.Page
@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
 
@@ -18,16 +19,19 @@ import org.springframework.web.bind.annotation.*
 class PetController(private val petService: PetService) {
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN_USER', 'STANDARD_USER')")
     fun list(@PageableDefault(size = 20, sort = ["name"], direction = Sort.Direction.ASC) pageable: Pageable): Page<PetView> {
         return petService.findAll(pageable)
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN_USER', 'STANDARD_USER')")
     fun list(@PathVariable id: Long): PetView? {
         return petService.findById(id)
     }
 
     @GetMapping("/name/{name}")
+    @PreAuthorize("hasAnyAuthority('ADMIN_USER', 'STANDARD_USER')")
     fun listByName(
         @PathVariable name: String,
         @PageableDefault(size = 20, sort = ["name"], direction = Sort.Direction.ASC) pageable: Pageable,
@@ -36,6 +40,7 @@ class PetController(private val petService: PetService) {
     }
 
     @GetMapping("/search")
+    @PreAuthorize("hasAnyAuthority('ADMIN_USER', 'STANDARD_USER')")
     fun searchPets(
         @RequestParam(required = false) name: String?,
         @RequestParam(required = false) species: PetSpecies?,
@@ -52,6 +57,7 @@ class PetController(private val petService: PetService) {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Transactional
+    @PreAuthorize("hasAnyAuthority('ADMIN_USER', 'STANDARD_USER')")
     fun create(@RequestBody pet: PetCreate): PetView? {
         return petService.create(pet)
     }
@@ -59,13 +65,15 @@ class PetController(private val petService: PetService) {
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
-    fun updateUser(@RequestBody pet: PetUpdate) {
+    @PreAuthorize("hasAnyAuthority('ADMIN_USER', 'STANDARD_USER')")
+    fun updatePet(@RequestBody pet: PetUpdate) {
         petService.update(pet)
     }
 
     @PutMapping("/{id}/approve")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
+    @PreAuthorize("hasAuthority('ADMIN_USER')")
     fun makeAvailable(@PathVariable id: Long) {
         petService.updateStatus(id, PetStatus.AVAILABLE)
     }
@@ -73,6 +81,7 @@ class PetController(private val petService: PetService) {
     @PutMapping("/{id}/quarantine")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
+    @PreAuthorize("hasAuthority('ADMIN_USER')")
     fun makeQuarantined(@PathVariable id: Long) {
         petService.updateStatus(id, PetStatus.QUARANTINE)
     }
@@ -80,6 +89,7 @@ class PetController(private val petService: PetService) {
     @PutMapping("/{id}/adopt")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
+    @PreAuthorize("hasAnyAuthority('ADMIN_USER', 'STANDARD_USER')")
     fun makeAdopted(@PathVariable id: Long) {
         petService.updateStatus(id, PetStatus.ADOPTED)
     }
@@ -87,6 +97,7 @@ class PetController(private val petService: PetService) {
     @PutMapping("/{id}/remove")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
+    @PreAuthorize("hasAnyAuthority('ADMIN_USER', 'STANDARD_USER')")
     fun makeRemoved(@PathVariable id: Long) {
         petService.updateStatus(id, PetStatus.REMOVED)
     }
@@ -94,6 +105,7 @@ class PetController(private val petService: PetService) {
     @PutMapping("/{id}/suspend")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
+    @PreAuthorize("hasAuthority('ADMIN_USER')")
     fun makeSuspended(@PathVariable id: Long) {
         petService.updateStatus(id, PetStatus.SUSPENDED)
     }

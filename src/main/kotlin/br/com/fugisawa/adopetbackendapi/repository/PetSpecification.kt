@@ -1,9 +1,9 @@
 package br.com.fugisawa.adopetbackendapi.repository
 
-import br.com.fugisawa.adopetbackendapi.domain.Pet
-import br.com.fugisawa.adopetbackendapi.domain.PetSize
-import br.com.fugisawa.adopetbackendapi.domain.PetSpecies
-import br.com.fugisawa.adopetbackendapi.domain.PetStatus
+import br.com.fugisawa.adopetbackendapi.domain.pet.Pet
+import br.com.fugisawa.adopetbackendapi.domain.pet.PetSize
+import br.com.fugisawa.adopetbackendapi.domain.pet.PetSpecies
+import br.com.fugisawa.adopetbackendapi.domain.pet.PetStatus
 import jakarta.persistence.criteria.Predicate
 import org.springframework.data.jpa.domain.Specification
 

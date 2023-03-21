@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
 
@@ -20,6 +21,7 @@ class UserController(val userService: UserService) {
 
     @GetMapping
     @Cacheable("users")
+    @PreAuthorize("hasAuthority('ADMIN_USER')")
     fun listUsers(
         @PageableDefault(size = 20, sort = ["name"], direction = Sort.Direction.ASC) pageable: Pageable
     ): Page<UserView> {
@@ -28,12 +30,14 @@ class UserController(val userService: UserService) {
 
     @GetMapping("/{id}")
     @Cacheable("users")
+    @PreAuthorize("hasAuthority('ADMIN_USER')")
     fun listUser(@PathVariable id: Long): UserView? {
         return userService.findById(id)
     }
 
     @GetMapping("/email/{email}")
     @Cacheable("users")
+    @PreAuthorize("hasAuthority('ADMIN_USER')")
     fun listUsersByEmail(
         @RequestParam email: String,
         @PageableDefault(size = 20, sort = ["name"], direction = Sort.Direction.ASC) pageable: Pageable,
@@ -43,6 +47,7 @@ class UserController(val userService: UserService) {
 
     @GetMapping("/search")
     @Cacheable("users")
+    @PreAuthorize("hasAuthority('ADMIN_USER')")
     fun searchUsers(
         @RequestParam(required = false) email: String?,
         @RequestParam(required = false) name: String?,
@@ -64,6 +69,7 @@ class UserController(val userService: UserService) {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
     @CacheEvict("users", allEntries = true)
+    @PreAuthorize("hasAnyAuthority('ADMIN_USER', 'STANDARD_USER')")
     fun updateUser(@RequestBody user: UserUpdate) {
         userService.update(user)
     }
@@ -72,6 +78,7 @@ class UserController(val userService: UserService) {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
     @CacheEvict("users", allEntries = true)
+    @PreAuthorize("hasAuthority('ADMIN_USER')")
     fun disableUser(@PathVariable id: Long) {
         userService.disable(id)
     }
@@ -80,6 +87,7 @@ class UserController(val userService: UserService) {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
     @CacheEvict("users", allEntries = true)
+    @PreAuthorize("hasAuthority('ADMIN_USER')")
     fun enableUser(@PathVariable id: Long) {
         userService.enable(id)
     }

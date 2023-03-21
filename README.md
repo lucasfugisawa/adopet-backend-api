@@ -36,7 +36,7 @@ Entre no diretório do projeto
 A continuar...
 ```bash
   - criar banco de dados
-  - ajustar configurações application.properties
+  - ajustar configurações application.yml
   - etc.
 ```
 

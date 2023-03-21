@@ -1,9 +1,9 @@
 package br.com.fugisawa.adopetbackendapi.service
 
-import br.com.fugisawa.adopetbackendapi.domain.Pet
-import br.com.fugisawa.adopetbackendapi.domain.PetSize
-import br.com.fugisawa.adopetbackendapi.domain.PetSpecies
-import br.com.fugisawa.adopetbackendapi.domain.PetStatus
+import br.com.fugisawa.adopetbackendapi.domain.pet.Pet
+import br.com.fugisawa.adopetbackendapi.domain.pet.PetSize
+import br.com.fugisawa.adopetbackendapi.domain.pet.PetSpecies
+import br.com.fugisawa.adopetbackendapi.domain.pet.PetStatus
 import br.com.fugisawa.adopetbackendapi.dto.PetCreate
 import br.com.fugisawa.adopetbackendapi.dto.PetUpdate
 import br.com.fugisawa.adopetbackendapi.dto.PetView

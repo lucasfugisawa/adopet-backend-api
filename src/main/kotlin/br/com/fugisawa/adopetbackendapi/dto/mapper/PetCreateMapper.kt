@@ -1,6 +1,6 @@
 package br.com.fugisawa.adopetbackendapi.dto.mapper
 
-import br.com.fugisawa.adopetbackendapi.domain.Pet
+import br.com.fugisawa.adopetbackendapi.domain.pet.Pet
 import br.com.fugisawa.adopetbackendapi.dto.PetCreate
 import br.com.fugisawa.adopetbackendapi.exception.NotFoundException
 import br.com.fugisawa.adopetbackendapi.repository.UserRepository

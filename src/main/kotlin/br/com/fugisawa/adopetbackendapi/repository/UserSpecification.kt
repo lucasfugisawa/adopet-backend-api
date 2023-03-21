@@ -1,6 +1,6 @@
 package br.com.fugisawa.adopetbackendapi.repository
 
-import br.com.fugisawa.adopetbackendapi.domain.User
+import br.com.fugisawa.adopetbackendapi.domain.user.User
 import jakarta.persistence.criteria.Predicate
 import org.springframework.data.jpa.domain.Specification
 
