@@ -5,7 +5,7 @@ import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "adopet_pet")
+@Table(name = "pet")
 data class Pet(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
@@ -31,5 +31,5 @@ data class Pet(
     var status: PetStatus = PetStatus.AVAILABLE,
 
     var statusDate: LocalDateTime = LocalDateTime.now(),
-    val creationDate: LocalDateTime? = LocalDateTime.now(),
+    val creationDate: LocalDateTime = LocalDateTime.now(),
 )

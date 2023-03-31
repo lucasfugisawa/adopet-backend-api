@@ -5,15 +5,15 @@ import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.Parameter
 
 @Entity
-@Table(name = "adopet_role")
+@Table(name = "role")
 class Role(
   @Id
   @GeneratedValue(generator = "app_role-sequence-generator")
   @GenericGenerator(
-    name = "app_role-sequence-generator",
+    name = "role-sequence-generator",
     strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
     parameters = [
-      Parameter(name = "sequence_name", value = "app_role_SEQ"),
+      Parameter(name = "sequence_name", value = "role_SEQ"),
       Parameter(name = "initial_value", value = "100"),
       Parameter(name = "increment_size", value = "1")
     ]
