@@ -34,7 +34,7 @@ class WebConfig(
       .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
       .and()
       .authorizeHttpRequests()
-//      .requestMatchers("/**").permitAll()
+      .requestMatchers("/**").permitAll()
       .requestMatchers(HttpMethod.GET, "/actuator/health/**").permitAll()
       .requestMatchers(HttpMethod.GET, "/actuator/info/**").permitAll()
       .requestMatchers(HttpMethod.POST, "/login").permitAll()
