@@ -42,7 +42,7 @@ class PetService(
     fun create(pet: PetCreate) = petRepository.save(pet.let(petCreateToPet)).let(petToView)
 
     fun update(pet: PetUpdate) =
-        petRepository.findById(pet.id).get()
+        petRepository.findById(pet.id).getOrNull()
             ?.apply {
                 name = pet.name
                 species = pet.species
