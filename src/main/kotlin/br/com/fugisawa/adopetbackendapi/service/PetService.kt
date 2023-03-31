@@ -7,12 +7,11 @@ import br.com.fugisawa.adopetbackendapi.domain.pet.PetStatus
 import br.com.fugisawa.adopetbackendapi.dto.PetCreate
 import br.com.fugisawa.adopetbackendapi.dto.PetUpdate
 import br.com.fugisawa.adopetbackendapi.dto.PetView
-import br.com.fugisawa.adopetbackendapi.exception.NotFoundException
 import br.com.fugisawa.adopetbackendapi.repository.PetRepository
 import br.com.fugisawa.adopetbackendapi.repository.PetSpecification
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import kotlin.jvm.optionals.getOrNull
 
 @Service
 class PetService(
@@ -21,18 +20,12 @@ class PetService(
     private val petToView: (Pet) -> (PetView),
 ) {
 
-    fun findAll(pageable: Pageable): Page<PetView> {
-        return petRepository.findAll(pageable).map(petToView)
-    }
+    fun findAll(pageable: Pageable) = petRepository.findAll(pageable).map(petToView)
 
-    fun findById(id: Long): PetView? {
-        val savedPet = petRepository.findById(id).orElseThrow { NotFoundException("Pet $id not found.") }
-        return savedPet.let(petToView)
-    }
+    fun findById(id: Long) = petRepository.findById(id).getOrNull()?.let(petToView)
 
-    fun findByName(name: String, pageable: Pageable): Page<PetView> {
-        return petRepository.findByNameContainingIgnoreCase(name, pageable).map(petToView)
-    }
+    fun findByName(name: String, pageable: Pageable) =
+        petRepository.findByNameContainingIgnoreCase(name, pageable).map(petToView)
 
     fun searchPets(
         name: String? = null,
@@ -43,35 +36,26 @@ class PetService(
         status: PetStatus? = null,
         ownerId: Long? = null,
         pageable: Pageable,
-    ): Page<PetView> {
-        val pets =
-            petRepository.findAll(PetSpecification.searchPets(name, species, size, city, state, status, ownerId), pageable)
-        return pets.map(petToView)
-    }
+    ) = petRepository.findAll(PetSpecification.searchPets(name, species, size, city, state, status, ownerId), pageable)
+        .map(petToView)
 
-    fun create(pet: PetCreate): PetView? {
-        val savedPet = petRepository.save(pet.let(petCreateToPet))
-        return savedPet.let(petToView)
-    }
+    fun create(pet: PetCreate) = petRepository.save(pet.let(petCreateToPet)).let(petToView)
 
-    fun update(pet: PetUpdate) {
-        val savedPet = petRepository.findById(pet.id).orElseThrow { NotFoundException("Pet ${pet.id} not found.") }
-        with(savedPet) {
-            name = pet.name
-            species = pet.species
-            size = pet.size
-            personality = pet.personality
-            city = pet.city
-            state = pet.state
-            profilePictureUrl = pet.profilePictureUrl
-            status = pet.status
-        }
-        petRepository.save(savedPet)
-    }
+    fun update(pet: PetUpdate) =
+        petRepository.findById(pet.id).get()
+            ?.apply {
+                name = pet.name
+                species = pet.species
+                size = pet.size
+                personality = pet.personality
+                city = pet.city
+                state = pet.state
+                profilePictureUrl = pet.profilePictureUrl
+                status = pet.status
+            }
+            ?.also { petRepository.save(it) }
 
-    fun updateStatus(id: Long, status: PetStatus) {
-        val savedPet = petRepository.findById(id).orElseThrow { NotFoundException("Pet $id not found.") }
-        savedPet.status = status
-        petRepository.save(savedPet)
-    }
+    fun updateStatus(id: Long, status: PetStatus) = petRepository.findById(id).getOrNull()
+        ?.apply { this.status = status }
+        ?.also { petRepository.save(it) }
 }
