@@ -71,4 +71,4 @@ spring:
     activate:
       on-profile: docker
 server:
-  port: 8888
+  port: 8080
