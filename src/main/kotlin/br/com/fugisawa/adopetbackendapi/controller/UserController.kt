@@ -53,27 +53,23 @@ class UserController(private val userService: UserService) {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Transactional
     @CacheEvict("users", allEntries = true)
     fun createUser(@RequestBody user: UserCreate) = userService.create(user)
 
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Transactional
     @CacheEvict("users", allEntries = true)
     @PreAuthorize("hasAnyAuthority('ADMIN_USER', 'STANDARD_USER')")
     fun updateUser(@RequestBody user: UserUpdate) = userService.update(user)
 
     @PostMapping("/disable/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Transactional
     @CacheEvict("users", allEntries = true)
     @PreAuthorize("hasAuthority('ADMIN_USER')")
     fun disableUser(@PathVariable id: Long) = userService.disable(id)
 
     @PostMapping("/enable/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Transactional
     @CacheEvict("users", allEntries = true)
     @PreAuthorize("hasAuthority('ADMIN_USER')")
     fun enableUser(@PathVariable id: Long) = userService.enable(id)

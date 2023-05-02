@@ -9,6 +9,7 @@ import br.com.fugisawa.adopetbackendapi.repository.UserSpecification
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import kotlin.jvm.optionals.getOrNull
 
 @Service
@@ -35,8 +36,10 @@ class UserService(
     ): Page<UserView> =
         userRepository.findAll(UserSpecification.searchUsers(email, name, enabled), pageable).map(userToView)
 
+    @Transactional
     fun create(user: UserCreate): UserView? = userRepository.save(user.let(userCreateToUser)).let(userToView)
 
+    @Transactional
     fun update(user: UserUpdate) {
         userRepository.findById(user.id).getOrNull()
             ?.apply {
@@ -49,6 +52,7 @@ class UserService(
             ?.also { userRepository.save(it) }
     }
 
+    @Transactional
     fun disable(id: Long) = userRepository.getReferenceById(id)
         .apply { enabled = false }
         .run { userRepository.save(this) }

@@ -57,43 +57,36 @@ class PetController(private val petService: PetService) {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Transactional
     @PreAuthorize("hasAnyAuthority('ADMIN_USER', 'STANDARD_USER')")
     fun create(@RequestBody pet: PetCreate) = petService.create(pet)
 
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Transactional
     @PreAuthorize("hasAnyAuthority('ADMIN_USER', 'STANDARD_USER')")
     fun updatePet(@RequestBody pet: PetUpdate) = petService.update(pet)
 
     @PutMapping("/{id}/approve")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Transactional
     @PreAuthorize("hasAuthority('ADMIN_USER')")
     fun makeAvailable(@PathVariable id: Long) = petService.updateStatus(id, PetStatus.AVAILABLE)
 
     @PutMapping("/{id}/quarantine")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Transactional
     @PreAuthorize("hasAuthority('ADMIN_USER')")
     fun makeQuarantined(@PathVariable id: Long) = petService.updateStatus(id, PetStatus.QUARANTINE)
 
     @PutMapping("/{id}/adopt")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Transactional
     @PreAuthorize("hasAnyAuthority('ADMIN_USER', 'STANDARD_USER')")
     fun makeAdopted(@PathVariable id: Long) = petService.updateStatus(id, PetStatus.ADOPTED)
 
     @PutMapping("/{id}/remove")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Transactional
     @PreAuthorize("hasAnyAuthority('ADMIN_USER', 'STANDARD_USER')")
     fun makeRemoved(@PathVariable id: Long) = petService.updateStatus(id, PetStatus.REMOVED)
 
     @PutMapping("/{id}/suspend")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Transactional
     @PreAuthorize("hasAuthority('ADMIN_USER')")
     fun makeSuspended(@PathVariable id: Long) = petService.updateStatus(id, PetStatus.SUSPENDED)
 

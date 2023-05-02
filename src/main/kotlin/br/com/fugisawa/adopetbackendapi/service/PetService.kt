@@ -11,6 +11,7 @@ import br.com.fugisawa.adopetbackendapi.repository.PetRepository
 import br.com.fugisawa.adopetbackendapi.repository.PetSpecification
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import kotlin.jvm.optionals.getOrNull
 
 @Service
@@ -39,8 +40,10 @@ class PetService(
     ) = petRepository.findAll(PetSpecification.searchPets(name, species, size, city, state, status, ownerId), pageable)
         .map(petToView)
 
+    @Transactional
     fun create(pet: PetCreate) = petRepository.save(pet.let(petCreateToPet)).let(petToView)
 
+    @Transactional
     fun update(pet: PetUpdate) =
         petRepository.findById(pet.id).getOrNull()
             ?.apply {
@@ -55,6 +58,7 @@ class PetService(
             }
             ?.also { petRepository.save(it) }
 
+    @Transactional
     fun updateStatus(id: Long, status: PetStatus) = petRepository.findById(id).getOrNull()
         ?.apply { this.status = status }
         ?.also { petRepository.save(it) }
