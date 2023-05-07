@@ -57,6 +57,7 @@ class UserService(
         .apply { enabled = false }
         .run { userRepository.save(this) }
 
+    @Transactional
     fun enable(id: Long) = userRepository.getReferenceById(id)
         .apply { enabled = true }
         .run { userRepository.save(this) }
